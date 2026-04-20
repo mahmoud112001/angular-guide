@@ -73,7 +73,7 @@ This is an interactive HTML-based guide for learning Angular concepts, designed 
 
 ```
 angular-guide/
-├── angular-guide.html    # Main HTML file containing the entire guide
+├── index.html    # Main HTML file containing the entire guide
 └── README.md            # This documentation file
 ```
 
