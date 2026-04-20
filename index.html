@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Angular Concepts — Interactive Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #080c12;
+  --surface:  #0e1520;
+  --card:     #131c2b;
+  --border:   #1e2d42;
+  --border2:  #243347;
+  --accent:   #e1342a;
+  --accent2:  #ff5c52;
+  --green:    #10b981;
+  --blue:     #3b82f6;
+  --yellow:   #f59e0b;
+  --purple:   #8b5cf6;
+  --text:     #e2e8f0;
+  --muted:    #64748b;
+  --muted2:   #94a3b8;
+  --mono:     'JetBrains Mono', monospace;
+  --sans:     'Syne', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 260px;
+  min-width: 260px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar-logo {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-logo .logo-mark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--accent);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.logo-text {
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.sidebar-subtitle {
+  font-size: 11px;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 0;
+}
+
+.sidebar-nav::-webkit-scrollbar { width: 4px; }
+.sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+.sidebar-nav::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 20px;
+  cursor: pointer;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted2);
+  position: relative;
+}
+
+.nav-item:hover { background: rgba(255,255,255,0.03); color: var(--text); }
+.nav-item.active { background: rgba(225,52,42,0.08); color: #fff; border-left-color: var(--accent); }
+
+.nav-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  min-width: 18px;
+}
+
+.nav-item.active .nav-num { color: var(--accent); }
+
+.nav-badge {
+  margin-left: auto;
+  font-size: 9px;
+  font-family: var(--mono);
+  background: rgba(225,52,42,0.15);
+  color: var(--accent);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* ── MAIN ── */
+.main {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.main::-webkit-scrollbar { width: 5px; }
+.main::-webkit-scrollbar-track { background: var(--bg); }
+.main::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* ── TOPIC HEADER ── */
+.topic-header {
+  padding: 32px 40px 0;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 10;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 20px;
+}
+
+.topic-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+
+.topic-title {
+  font-size: 30px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.03em;
+  margin-bottom: 6px;
+}
+
+.topic-subtitle {
+  font-size: 14px;
+  color: var(--muted2);
+  font-family: var(--mono);
+}
+
+/* ── CONTENT SECTIONS ── */
+.content {
+  padding: 32px 40px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* Section card */
+.section {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.section-head {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.02);
+}
+
+.section-icon {
+  font-size: 16px;
+}
+
+.section-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted2);
+}
+
+.section-body {
+  padding: 20px;
+}
+
+.section-body p {
+  font-size: 14px;
+  color: var(--muted2);
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+
+.section-body p:last-child { margin-bottom: 0; }
+
+/* Highlight text */
+.hl { color: var(--accent2); font-weight: 700; }
+.hl-green { color: var(--green); font-weight: 600; }
+.hl-blue  { color: var(--blue);  font-weight: 600; }
+.hl-yellow{ color: var(--yellow);font-weight: 600; }
+
+/* Types grid */
+.types-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.type-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.type-card-title {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent2);
+  margin-bottom: 6px;
+}
+
+.type-card-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* When/Why grid */
+.when-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.when-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.when-card-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: var(--mono);
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.when-card.when { border-top: 2px solid var(--blue); }
+.when-card.when .when-card-label { color: var(--blue); }
+.when-card.why  { border-top: 2px solid var(--green); }
+.when-card.why  .when-card-label { color: var(--green); }
+
+.when-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.when-list li {
+  font-size: 12px;
+  color: var(--muted2);
+  display: flex;
+  gap: 8px;
+  line-height: 1.5;
+}
+
+.when-list li::before { content: "→"; color: var(--muted); flex-shrink: 0; }
+
+/* Code block */
+.code-block {
+  background: #060a0f;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.code-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+}
+
+.code-lang {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.code-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.code-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.d1 { background: #ff5f57; }
+.d2 { background: #febc2e; }
+.d3 { background: #28c840; }
+
+pre {
+  padding: 18px 20px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.75;
+  overflow-x: auto;
+  color: #cdd6f4;
+}
+
+pre::-webkit-scrollbar { height: 4px; }
+pre::-webkit-scrollbar-track { background: transparent; }
+pre::-webkit-scrollbar-thumb { background: var(--border2); }
+
+/* Syntax colors */
+.kw  { color: #cba6f7; } /* keyword */
+.str { color: #a6e3a1; } /* string */
+.fn  { color: #89b4fa; } /* function */
+.cm  { color: #6c7086; font-style: italic; } /* comment */
+.tag { color: #f38ba8; } /* html tag */
+.att { color: #fab387; } /* attribute */
+.val { color: #a6e3a1; } /* value */
+.typ { color: #89dceb; } /* type */
+.num { color: #fab387; } /* number */
+.dec { color: #f9e2af; } /* decorator */
+
+/* Interview Q&A */
+.qa-list { display: flex; flex-direction: column; gap: 8px; }
+
+.qa-item {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.qa-q {
+  padding: 12px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  background: rgba(255,255,255,0.02);
+  transition: background 0.15s;
+  user-select: none;
+}
+
+.qa-q:hover { background: rgba(255,255,255,0.04); }
+
+.qa-badge {
+  font-size: 10px;
+  font-family: var(--mono);
+  background: rgba(225,52,42,0.15);
+  color: var(--accent);
+  padding: 2px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.qa-arrow {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 12px;
+  transition: transform 0.2s;
+}
+
+.qa-item.open .qa-arrow { transform: rotate(180deg); }
+
+.qa-a {
+  display: none;
+  padding: 14px 16px;
+  font-size: 13px;
+  color: var(--muted2);
+  line-height: 1.7;
+  border-top: 1px solid var(--border);
+  background: rgba(16,185,129,0.03);
+}
+
+.qa-item.open .qa-a { display: block; }
+
+/* Interactive demo */
+.demo-area {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.demo-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.demo-input {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-family: var(--mono);
+  font-size: 13px;
+  width: 100%;
+  outline: none;
+  margin-bottom: 10px;
+  transition: border-color 0.2s;
+}
+
+.demo-input:focus { border-color: var(--accent); }
+
+.demo-output {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--green);
+  min-height: 36px;
+}
+
+.demo-btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-right: 8px;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.demo-btn:hover  { background: var(--accent2); }
+.demo-btn:active { transform: scale(0.97); }
+
+.demo-btn.green { background: var(--green); }
+.demo-btn.green:hover { background: #059669; }
+
+.demo-flex { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.demo-row  { margin-bottom: 10px; }
+
+/* Observable stream viz */
+.stream-viz {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  min-height: 36px;
+  padding: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.stream-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  animation: pop 0.3s ease-out;
+}
+
+@keyframes pop {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+/* Progress bar */
+.prog-bar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+/* Tag chip */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-family: var(--mono);
+  font-weight: 500;
+  gap: 4px;
+}
+
+.chip-red    { background: rgba(225,52,42,0.15);  color: var(--accent2); border: 1px solid rgba(225,52,42,0.25); }
+.chip-green  { background: rgba(16,185,129,0.12); color: var(--green);   border: 1px solid rgba(16,185,129,0.25); }
+.chip-blue   { background: rgba(59,130,246,0.12); color: var(--blue);    border: 1px solid rgba(59,130,246,0.25); }
+.chip-yellow { background: rgba(245,158,11,0.12); color: var(--yellow);  border: 1px solid rgba(245,158,11,0.25); }
+
+/* Topics list */
+.topics-page {
+  display: none;
+  flex-direction: column;
+}
+
+.topics-page.active { display: flex; }
+
+/* Responsive */
+@media (max-width: 700px) {
+  .sidebar { width: 220px; min-width: 220px; }
+  .content { padding: 20px; }
+  .when-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <div class="logo-icon">A</div>
+      <span class="logo-text">Angular Guide</span>
+    </div>
+    <div class="sidebar-subtitle">ITI MEARN Track · 2026</div>
+  </div>
+  <nav class="sidebar-nav" id="nav">
+    <div class="nav-item active" onclick="show(0)" data-idx="0">
+      <span class="nav-num">01</span> Interpolation
+    </div>
+    <div class="nav-item" onclick="show(1)" data-idx="1">
+      <span class="nav-num">02</span> Property Binding
+    </div>
+    <div class="nav-item" onclick="show(2)" data-idx="2">
+      <span class="nav-num">03</span> Event Binding
+    </div>
+    <div class="nav-item" onclick="show(3)" data-idx="3">
+      <span class="nav-num">04</span> *ngIf
+    </div>
+    <div class="nav-item" onclick="show(4)" data-idx="4">
+      <span class="nav-num">05</span> *ngFor
+    </div>
+    <div class="nav-item" onclick="show(5)" data-idx="5">
+      <span class="nav-num">06</span> Routing
+    </div>
+    <div class="nav-item" onclick="show(6)" data-idx="6">
+      <span class="nav-num">07</span> Services
+    </div>
+    <div class="nav-item" onclick="show(7)" data-idx="7">
+      <span class="nav-num">08</span> BehaviorSubject <span class="nav-badge">RxJS</span>
+    </div>
+    <div class="nav-item" onclick="show(8)" data-idx="8">
+      <span class="nav-num">09</span> Observable <span class="nav-badge">RxJS</span>
+    </div>
+    <div class="nav-item" onclick="show(9)" data-idx="9">
+      <span class="nav-num">10</span> Async Pipe
+    </div>
+    <div class="nav-item" onclick="show(10)" data-idx="10">
+      <span class="nav-num">11</span> @Input / @Output
+    </div>
+  </nav>
+</aside>
+
+<!-- ── MAIN ── -->
+<main class="main" id="main"></main>
+
+<script>
+// ──────────────────────────────────────────────────────────────
+// DATA
+// ──────────────────────────────────────────────────────────────
+const topics = [
+
+// 0. INTERPOLATION
+{
+  num:'01', eyebrow:'Template Syntax',
+  title:'Interpolation {{ }}',
+  subtitle:'عرض بيانات الـ component في الـ HTML',
+  sections:[
+    {
+      icon:'💡', title:'يعني إيه؟',
+      body:`<p>Interpolation هي أبسط طريقة لعرض قيمة من الـ <span class="hl">TypeScript</span> في الـ <span class="hl">HTML</span>.<br>
+بتحط القيمة بين علامتين تعجب مزدوجتين <span class="hl">{{ }}</span> وAngular بيحولها لـ String ويحطها في الصفحة.</p>
+<p>كل ما تغيرت القيمة في الـ component، الـ HTML بيتحدث تلقائياً — ده اللي بيسموه <span class="hl-green">One-Way Data Binding</span> (من TS → HTML).</p>`
+    },
+    {
+      icon:'🗂️', title:'أنواعه',
+      types:[
+        { t:'Property', d:'عرض قيمة متغير عادي: {{ name }}' },
+        { t:'Expression', d:'حسابات بسيطة: {{ 2 + 2 }} أو {{ price * qty }}' },
+        { t:'Method Call', d:'استدعاء function: {{ getFullName() }}' },
+        { t:'Ternary', d:'شرط مختصر: {{ age > 18 ? "Adult" : "Minor" }}' },
+      ]
+    },
+    {
+      icon:'📅', title:'امتى وليه؟',
+      when:['عايز تعرض اسم user أو رقم أو أي نص','عايز تعرض نتيجة عملية حسابية','عايز تعرض بيانات جاية من API','أي وقت عندك قيمة في TS وعايز تظهر في HTML'],
+      why:['Angular بيعمل Change Detection تلقائي','الكود بيبقى نضيف — الـ logic في TS والـ view في HTML','أسرع من DOM manipulation اليدوية','بيدعم Expressions بس مش statements — بيحميك من أخطاء']
+    },
+    {
+      icon:'💻', title:'كود',
+      code:`<span class="cm">// component.ts</span>
+<span class="kw">export class</span> <span class="typ">AppComponent</span> {
+  name    = <span class="str">'Mahmoud'</span>;
+  age     = <span class="num">24</span>;
+  price   = <span class="num">100</span>;
+  qty     = <span class="num">3</span>;
+
+  <span class="fn">getGreeting</span>() {
+    <span class="kw">return</span> <span class="str">\`Hello, \${this.name}!\`</span>;
+  }
+}
+
+<span class="cm">&lt;!-- component.html --&gt;</span>
+<span class="tag">&lt;h1&gt;</span>{{ name }}<span class="tag">&lt;/h1&gt;</span>                       <span class="cm">&lt;!-- Mahmoud --&gt;</span>
+<span class="tag">&lt;p&gt;</span>Age: {{ age }}<span class="tag">&lt;/p&gt;</span>                    <span class="cm">&lt;!-- Age: 24 --&gt;</span>
+<span class="tag">&lt;p&gt;</span>Total: {{ price * qty }}<span class="tag">&lt;/p&gt;</span>          <span class="cm">&lt;!-- Total: 300 --&gt;</span>
+<span class="tag">&lt;p&gt;</span>{{ getGreeting() }}<span class="tag">&lt;/p&gt;</span>              <span class="cm">&lt;!-- Hello, Mahmoud! --&gt;</span>
+<span class="tag">&lt;p&gt;</span>{{ age >= 18 ? 'Adult' : 'Minor' }}<span class="tag">&lt;/p&gt;</span>  <span class="cm">&lt;!-- Adult --&gt;</span>`
+    },
+    {
+      icon:'🎮', title:'جرب بنفسك',
+      demo:'interpolation'
+    },
+    {
+      icon:'🎯', title:'أسئلة الإنترفيو',
+      qa:[
+        { q:'ما الفرق بين Interpolation وProperty Binding؟', a:'Interpolation بتحول القيمة لـ String وبتضيفها كـ text في الـ HTML. Property Binding بتربط قيمة بـ DOM property مباشرة وبتقدر تمرر أي نوع (boolean, array, object). مثلاً [disabled]="true" ما تقدرش تعملها بـ Interpolation.' },
+        { q:'هل ممكن تكتب JavaScript statements داخل {{ }}؟', a:'لأ. Angular بيسمح فقط بـ Expressions (قيم، عمليات حسابية، method calls، ternary). ما يجيش if/else حقيقي أو for loop أو new keyword أو assignment (=) جوه الـ template.' },
+        { q:'ما معنى One-Way Data Binding؟', a:'يعني البيانات بتتدفق في اتجاه واحد بس — من الـ component (TypeScript) إلى الـ template (HTML). لو غيرت الـ HTML مش هيتغير الـ TypeScript. عشان تعمل الاتجاهين محتاج [(ngModel)] = Two-Way Binding.' },
+      ]
+    }
+  ]
+},
+
+// 1. PROPERTY BINDING
+{
+  num:'02', eyebrow:'Template Syntax',
+  title:'Property Binding [ ]',
+  subtitle:'ربط قيمة TypeScript بـ DOM property',
+  sections:[
+    {
+      icon:'💡', title:'يعني إيه؟',
+      body:`<p>Property Binding بتخليك تربط قيمة من الـ component بـ <span class="hl">property</span> في الـ DOM العنصر — مش كـ text، كـ قيمة حقيقية.</p>
+<p>بتستخدمها بأقواس مربعة: <span class="hl">[property]="expression"</span><br>
+مثال: <span class="hl-green">[disabled]="isLoading"</span> بيمرر boolean حقيقي للـ button مش string.</p>
+<p>لاحظ الفرق: <span class="hl-yellow">src="{{ url }}"</span> = Interpolation = بتحول URL لـ string.<br>
+<span class="hl-green">[src]="url"</span> = Property Binding = بتمرر القيمة مباشرة.</p>`
+    },
+    {
+      icon:'🗂️', title:'أنواعه',
+      types:[
+        { t:'DOM Property', d:'[value], [src], [href], [disabled], [checked]' },
+        { t:'Class Binding', d:'[class.active]="isActive" — يضيف class لو true' },
+        { t:'Style Binding', d:'[style.color]="myColor" — يحدد style مباشرة' },
+        { t:'Attribute Binding', d:'[attr.aria-label]="label" — للـ HTML attributes' },
+        { t:'Component Input', d:'[student]="myStudent" — تمرير data لـ component' },
+      ]
+    },
+    {
+      icon:'📅', title:'امتى وليه؟',
+      when:['تحتاج تمرر boolean لـ [disabled] أو [checked]','تحتاج تغير src صورة ديناميكياً','تحتاج تمرر object أو array لـ component تاني','تحتاج تضيف أو تشيل CSS class بناءً على condition'],
+      why:['بتقدر تمرر أي نوع (bool, object, array) مش بس string','أداء أحسن من Interpolation في حالات كتير','بتخليك تتحكم في الـ DOM بشكل نظيف','أساس @Input في Component Communication']
+    },
+    {
+      icon:'💻', title:'كود',
+      code:`<span class="cm">// component.ts</span>
+<span class="kw">export class</span> <span class="typ">AppComponent</span> {
+  imageUrl  = <span class="str">'https://example.com/photo.jpg'</span>;
+  isLoading = <span class="kw">true</span>;
+  isActive  = <span class="kw">false</span>;
+  btnColor  = <span class="str">'#10b981'</span>;
+  student   = { name: <span class="str">'Ahmed'</span>, gpa: <span class="num">3.8</span> };
+}
+
+<span class="cm">&lt;!-- DOM property --&gt;</span>
+<span class="tag">&lt;img</span> <span class="att">[src]</span>=<span class="val">"imageUrl"</span> <span class="att">[alt]</span>=<span class="val">"'Student Photo'"</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- Disable button when loading --&gt;</span>
+<span class="tag">&lt;button</span> <span class="att">[disabled]</span>=<span class="val">"isLoading"</span><span class="tag">&gt;</span>Save<span class="tag">&lt;/button&gt;</span>
+
+<span class="cm">&lt;!-- Add CSS class dynamically --&gt;</span>
+<span class="tag">&lt;div</span> <span class="att">[class.active]</span>=<span class="val">"isActive"</span><span class="tag">&gt;</span>Card<span class="tag">&lt;/div&gt;</span>
+
+<span class="cm">&lt;!-- Style binding --&gt;</span>
+<span class="tag">&lt;p</span> <span class="att">[style.color]</span>=<span class="val">"btnColor"</span><span class="tag">&gt;</span>Colored text<span class="tag">&lt;/p&gt;</span>
+
+<span class="cm">&lt;!-- Pass object to child component --&gt;</span>
+<span class="tag">&lt;app-student-card</span> <span class="att">[student]</span>=<span class="val">"student"</span><span class="tag">&gt;&lt;/app-student-card&gt;</span>`
+    },
+    {
+      icon:'🎮', title:'جرب بنفسك',
+      demo:'property'
+    },
+    {
+      icon:'🎯', title:'أسئلة الإنترفيو',
+      qa:[
+        { q:'ما الفرق بين [src]="url" و src="{{ url }}"؟', a:'كلهم بيشتغلوا بس [src]="url" أحسن لأنها تمرر القيمة مباشرة كـ property ومش بتعمل string conversion. الـ Interpolation بتحول الـ URL لـ text الأول وده ممكن يسبب flash بسيط في الصورة. عموماً استخدم Property Binding مع الـ properties اللي ممكن تاخد non-string values.' },
+        { q:'إزاي تضيف أو تشيل CSS class ديناميكياً؟', a:'عندك 3 طرق: [class.myClass]="condition" لـ class واحد، [ngClass]="{myClass: condition, other: otherCond}" لأكتر من class، أو [class]="expression" بتحدد كل الكلاسات دفعة واحدة.' },
+        { q:'ما الفرق بين Property و Attribute؟', a:'Property بتاعت الـ DOM object (JavaScript). Attribute بتاعت الـ HTML element. مثلاً disabled property هي boolean، لكن الـ attribute بتاعتها string. Angular Property Binding بيشتغل على الـ DOM properties، وعشان تبايند على HTML attributes بتستخدم [attr.name].' },
+      ]
+    }
+  ]
+},
+
+// 2. EVENT BINDING
+{
+  num:'03', eyebrow:'Template Syntax',
+  title:'Event Binding ( )',
+  subtitle:'ربط أحداث الـ DOM بـ methods في الـ component',
+  sections:[
+    {
+      icon:'💡', title:'يعني إيه؟',
+      body:`<p>Event Binding بتخليك تستمع لـ <span class="hl">DOM events</span> زي click وkeyup وchange وتشغّل method في الـ component لما الـ event يحصل.</p>
+<p>الصيغة: <span class="hl">(eventName)="method()"</span><br>
+لما المستخدم يضغط مثلاً، Angular بيشغّل الـ method اللي أنت حددتها تلقائياً.</p>
+<p>عندك access على الـ <span class="hl-green">$event</span> object اللي فيه كل تفاصيل الـ event (زي قيمة الـ input أو مكان الكليك).</p>`
+    },
+    {
+      icon:'🗂️', title:'أنواعه',
+      types:[
+        { t:'Mouse Events', d:'(click), (dblclick), (mouseover), (mouseout)' },
+        { t:'Keyboard Events', d:'(keyup), (keydown), (keypress)' },
+        { t:'Form Events', d:'(ngSubmit), (change), (input), (focus), (blur)' },
+        { t:'Custom Events', d:'(@Output) EventEmitter — من child لـ parent' },
+        { t:'$event Object', d:'تمرير بيانات الـ event: (click)="fn($event)"' },
+      ]
+    },
+    {
+      icon:'📅', title:'امتى وليه؟',
+      when:['مستخدم بيضغط زرار (submit, delete, edit)','مستخدم بيكتب في input وعايزك تتفاعل فوراً','مستخدم بيغير قيمة dropdown','عايز child component يبلغ parent بحاجة حصلت'],
+      why:['Angular بيدير الـ event listeners تلقائياً وبيشيلهم لما الـ component يتدمر','الكود بيبقى نظيف — الـ logic في TS مش في HTML','بتوصلك بيانات الـ event ($event) بدون addEventListener يدوي','أساس التواصل بين الـ components']
+    },
+    {
+      icon:'💻', title:'كود',
+      code:`<span class="cm">// component.ts</span>
+<span class="kw">export class</span> <span class="typ">AppComponent</span> {
+  count    = <span class="num">0</span>;
+  message  = <span class="str">''</span>;
+
+  <span class="fn">increment</span>() { this.count++; }
+
+  <span class="fn">onInput</span>(event: <span class="typ">Event</span>) {
+    <span class="kw">const</span> input = event.target <span class="kw">as</span> <span class="typ">HTMLInputElement</span>;
+    this.message = input.value;
+  }
+
+  <span class="fn">onSubmit</span>(event: <span class="typ">Event</span>) {
+    event.<span class="fn">preventDefault</span>();
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'Form submitted!'</span>);
+  }
+}
+
+<span class="cm">&lt;!-- Click event --&gt;</span>
+<span class="tag">&lt;button</span> <span class="att">(click)</span>=<span class="val">"increment()"</span><span class="tag">&gt;</span>Count: {{ count }}<span class="tag">&lt;/button&gt;</span>
+
+<span class="cm">&lt;!-- Input event with $event --&gt;</span>
+<span class="tag">&lt;input</span> <span class="att">(input)</span>=<span class="val">"onInput($event)"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;p&gt;</span>You typed: {{ message }}<span class="tag">&lt;/p&gt;</span>
+
+<span class="cm">&lt;!-- Form submit --&gt;</span>
+<span class="tag">&lt;form</span> <span class="att">(ngSubmit)</span>=<span class="val">"onSubmit($event)"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;button</span> <span class="att">type</span>=<span class="val">"submit"</span><span class="tag">&gt;</span>Submit<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;/form&gt;</span>`
+    },
+    {
+      icon:'🎮', title:'جرب بنفسك',
+      demo:'event'
+    },
+    {
+      icon:'🎯', title:'أسئلة الإنترفيو',
+      qa:[
+        { q:'ما هو $event وامتى تستخدمه؟', a:'$event هو الـ DOM Event object اللي بيبعته الـ browser لما الـ event يحصل. بتستخدمه لما محتاج تعرف تفاصيل الـ event زي: قيمة الـ input المكتوب، مكان الماوس، أي key اتضغطت. مثال: (input)="search($event)" وجوا الـ method: const value = (event.target as HTMLInputElement).value' },
+        { q:'ما الفرق بين (click) و(keyup.enter)؟', a:'(click) بيستمع لأي كليك على العنصر. (keyup.enter) هو keyboard event filter — Angular بيفلتر الأحداث تلقائياً ويشغّل الـ method بس لما المستخدم يضغط Enter. ده اسمه Key Filtering وبيوفر عليك شرط في الكود.' },
+        { q:'إزاي Event Binding بيمنع memory leaks؟', a:'لما بتستخدم addEventListener يدوي في JavaScript لازم تعمل removeEventListener بنفسك لما العنصر يتمسح. Angular في Event Binding بيشيل الـ listeners تلقائياً لما الـ component يتـdestroy (ngOnDestroy)، فمفيش memory leaks.' },
+      ]
+    }
+  ]
+},
+
+// 3. *ngIf
+{
+  num:'04', eyebrow:'Structural Directives',
+  title:'*ngIf',
+  subtitle:'إظهار أو إخفاء عناصر بناءً على condition',
+  sections:[
+    {
+      icon:'💡', title:'يعني إيه؟',
+      body:`<p><span class="hl">*ngIf</span> هي Structural Directive — يعني بتغير هيكل الـ DOM نفسه.<br>
+لو الشرط <span class="hl-green">true</span> — العنصر بيتضاف للـ DOM.<br>
+لو الشرط <span class="hl">false</span> — العنصر بيتشال من الـ DOM خالص (مش بس hidden).</p>
+<p>الفرق المهم: <span class="hl-green">*ngIf</span> بيشيل العنصر من الـ DOM تماماً. <span class="hl-yellow">[hidden]</span> بيخليه موجود بس مش ظاهر بـ CSS.<br>
+يعني *ngIf أحسن للـ performance لأن العنصر مش بياخد memory أصلاً.</p>`
+    },
+    {
+      icon:'🗂️', title:'أنواعه',
+      types:[
+        { t:'Simple *ngIf', d:'*ngIf="condition" — إظهار لو الشرط true' },
+        { t:'if / else', d:'*ngIf="cond; else tmpl" — إظهار بديل لو false' },
+        { t:'if / then / else', d:'*ngIf="cond; then t1; else t2" — تحكم كامل' },
+        { t:'ng-template', d:'<ng-template #ref> — حاوية للـ else content' },
+        { t:'ng-container', d:'Wrapper بدون HTML element حقيقي في الـ DOM' },
+      ]
+    },
+    {
+      icon:'📅', title:'امتى وليه؟',
+      when:['عرض loading spinner ريحتى البيانات تتحمل','إخفاء form بعد الـ submit','عرض رسالة "لا توجد بيانات" لو القائمة فاضية','إظهار أجزاء الـ UI بناءً على صلاحيات المستخدم'],
+      why:['بيشيل العنصر من الـ DOM = أداء أحسن','الـ component بتاع العنصر بيتدمر ومش بيستهلك resources','الكود أوضح من إنك تستخدم CSS لإخفاء حاجات','بيشتغل مع ng-template لعمل patterns متقدمة']
+    },
+    {
+      icon:'💻', title:'كود',
+      code:`<span class="cm">// component.ts</span>
+<span class="kw">export class</span> <span class="typ">AppComponent</span> {
+  isLoggedIn = <span class="kw">false</span>;
+  isLoading  = <span class="kw">true</span>;
+  students   = [<span class="str">'Ahmed'</span>, <span class="str">'Sara'</span>];
+}
+
+<span class="cm">&lt;!-- Simple *ngIf --&gt;</span>
+<span class="tag">&lt;h2</span> <span class="att">*ngIf</span>=<span class="val">"isLoggedIn"</span><span class="tag">&gt;</span>Welcome back!<span class="tag">&lt;/h2&gt;</span>
+
+<span class="cm">&lt;!-- *ngIf + else --&gt;</span>
+<span class="tag">&lt;div</span> <span class="att">*ngIf</span>=<span class="val">"isLoggedIn; else loginBlock"</span><span class="tag">&gt;</span>
+  Dashboard
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="tag">&lt;ng-template</span> <span class="att">#loginBlock</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;p&gt;</span>Please log in<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/ng-template&gt;</span>
+
+<span class="cm">&lt;!-- Loading state --&gt;</span>
+<span class="tag">&lt;app-spinner</span> <span class="att">*ngIf</span>=<span class="val">"isLoading"</span><span class="tag">&gt;&lt;/app-spinner&gt;</span>
+<span class="tag">&lt;div</span> <span class="att">*ngIf</span>=<span class="val">"!isLoading"</span><span class="tag">&gt;</span>Content loaded!<span class="tag">&lt;/div&gt;</span>
+
+<span class="cm">&lt;!-- Empty state --&gt;</span>
+<span class="tag">&lt;p</span> <span class="att">*ngIf</span>=<span class="val">"students.length === 0"</span><span class="tag">&gt;</span>
+  No students found
+<span class="tag">&lt;/p&gt;</span>`
+    },
+    {
+      icon:'🎮', title:'جرب بنفسك',
+      demo:'ngif'
+    },
+    {
+      icon:'🎯', title:'أسئلة الإنترفيو',
+      qa:[
+        { q:'ما الفرق بين *ngIf و [hidden]؟', a:'*ngIf بيشيل العنصر من الـ DOM خالص — العنصر ومحتواه مش موجودين في الذاكرة. [hidden] بيستخدم CSS (display:none) — العنصر موجود في الـ DOM بس مش ظاهر. استخدم *ngIf للـ performance الأحسن، و[hidden] لو العنصر بيتبدل تكراراً وعايز تتجنب re-create overhead.' },
+        { q:'إيه هو ng-template؟', a:'ng-template هي Angular directive بتعرّف block من HTML ما بيتعملش render تلقائياً. بيتستخدم مع *ngIf else وmit *ngFor وكـ template outlet. مش بيضيف أي element حقيقي في الـ DOM — بيبقى "مخفي" ريحتى Angular يقرر يعرضه.' },
+        { q:'إيه هو ng-container ومتى يفيد؟', a:'ng-container هو grouping element بيخليك تحط multiple structural directives أو تجمع عناصر من غير ما تضيف div أو span زيادة في الـ DOM. مفيد جداً لما بتعمل *ngIf جوه *ngFor أو بتحتاج تجمع elements بدون wrapper حقيقي.' },
+      ]
+    }
+  ]
+},
+
+
+// 4. *ngFor
+{
+  num:'05', eyebrow:'Structural Directives',
+  title:'*ngFor',
+  subtitle:'تكرار عنصر HTML لكل item في قائمة',
+  sections:[
+    {
+      icon:'💡', title:'يعني إيه؟',
+      body:`<p><span class="hl">*ngFor</span> بتعمل loop على array وتكرر عنصر HTML لكل item فيه تلقائياً.</p>
+<p>بتكتبها هكذا: <span class="hl">*ngFor="let item of items"</span><br>
+وبتقدر تاخد معلومات زيادة زي: <span class="hl-green">index</span> (رقم العنصر)، <span class="hl-blue">first</span>، <span class="hl-yellow">last</span>، <span class="hl-green">even</span>، <span class="hl-green">odd</span>.</p>
+<p>مهم جداً تستخدم <span class="hl">trackBy</span> مع القوائم الكبيرة — بيخلي Angular يتعرف على كل item بـ ID فمش يعيد رسم كل القائمة لما تتغير.</p>`
+    },
+    {
+      icon:'🗂️', title:'المتغيرات المتاحة',
+      types:[
+        { t:'let item', d:'القيمة الحالية في كل iteration' },
+        { t:'index as i', d:'رقم العنصر الحالي (يبدأ من 0)' },
+        { t:'first as f', d:'boolean — true لو أول عنصر' },
+        { t:'last as l', d:'boolean — true لو آخر عنصر' },
+        { t:'even/odd', d:'boolean — للتلوين التبادلي (zebra striping)' },
+        { t:'trackBy', d:'function بتحسن الـ performance' },
+      ]
+    },
+    {
+      icon:'📅', title:'امتى وليه؟',
+      when:['عرض قائمة students أو products','بناء dropdown options من array','عرض rows في جدول','بناء أي شيء متكرر من بيانات'],
+      why:['بدله كنت هتكتب HTML كتير بشكل يدوي','بيتحدث تلقائي لما الـ array تتغير','trackBy بيحسن الأداء جداً مع القوائم الكبيرة','يدعم nested loops']
+    },
+    {
+      icon:'💻', title:'كود',
+      code:`<span class="cm">// component.ts</span>
+<span class="kw">export class</span> <span class="typ">AppComponent</span> {
+  students = [
+    { id: <span class="num">1</span>, name: <span class="str">'Ahmed'</span>, gpa: <span class="num">3.8</span> },
+    { id: <span class="num">2</span>, name: <span class="str">'Sara'</span>,  gpa: <span class="num">3.6</span> },
+    { id: <span class="num">3</span>, name: <span class="str">'Karim'</span>, gpa: <span class="num">3.9</span> },
+  ];
+
+  <span class="fn">trackById</span>(index: <span class="typ">number</span>, student: <span class="typ">any</span>) {
+    <span class="kw">return</span> student.id;  <span class="cm">// مهم جداً للـ performance</span>
+  }
+}
+
+<span class="cm">&lt;!-- Basic loop --&gt;</span>
+<span class="tag">&lt;div</span> <span class="att">*ngFor</span>=<span class="val">"let s of students; trackBy: trackById"</span><span class="tag">&gt;</span>
+  {{ s.name }} — {{ s.gpa }}
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cm">&lt;!-- With index and even/odd --&gt;</span>
+<span class="tag">&lt;tr</span>
+  <span class="att">*ngFor</span>=<span class="val">"let s of students; let i = index; let even = even"</span>
+  <span class="att">[class.even-row]</span>=<span class="val">"even"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;td&gt;</span>{{ i + 1 }}<span class="tag">&lt;/td&gt;</span>
+  <span class="tag">&lt;td&gt;</span>{{ s.name }}<span class="tag">&lt;/td&gt;</span>
+<span class="tag">&lt;/tr&gt;</span>
+
+<span class="cm">&lt;!-- First / Last --&gt;</span>
+<span class="tag">&lt;li</span>
+  <span class="att">*ngFor</span>=<span class="val">"let s of students; let first=first; let last=last"</span>
+  <span class="att">[class.first-item]</span>=<span class="val">"first"</span>
+  <span class="att">[class.last-item]</span>=<span class="val">"last"</span><span class="tag">&gt;</span>
+  {{ s.name }}
+<span class="tag">&lt;/li&gt;</span>`
+    },
+    {
+      icon:'🎮', title:'جرب بنفسك',
+      demo:'ngfor'
+    },
+    {
+      icon:'🎯', title:'أسئلة الإنترفيو',
+      qa:[
+        { q:'ليه trackBy مهم جداً؟', a:'لما بيتغير الـ array (زيادة item أو حذف)، Angular بدون trackBy بيعمل re-render لكل عناصر القائمة من الأول. trackBy بيعطي Angular طريقة يعرف بيها "ده نفس العنصر اللي كان موجود" فبيعمل update بس للعناصر اللي اتغيرت فعلاً. ده بيحسن الأداء بشكل كبير مع القوائم الكبيرة.' },
+        { q:'هل ينفع تعمل *ngFor و*ngIf على نفس العنصر؟', a:'لأ مباشرةً — Angular بيسمح بـ structural directive واحدة على عنصر. الحل: حط *ngIf على ng-container بره وحط *ngFor جوا، أو العكس. مثال: <ng-container *ngIf="show"><div *ngFor="let i of items">...</div></ng-container>' },
+        { q:'ما الفرق بين index و first/last؟', a:'index رقم عددي يبدأ من 0 ويزيد مع كل element. first وlast هم boolean values — true فقط للأول والأخير. بتستخدم first/last لتنسيق خاص للعنصر الأول والأخير (زي إزالة border-bottom من آخر row).' },
+      ]
+    }
+  ]
+},
+
+// 5. ROUTING
+{
+  num:'06', eyebrow:'Angular Core',
+  title:'Angular Routing',
+  subtitle:'التنقل بين صفحات الـ SPA',
+  sections:[
+    {
+      icon:'💡', title:'يعني إيه؟',
+      body:`<p>Angular Router بيخليك تعمل <span class="hl">Single Page Application (SPA)</span> — يعني التطبيق صفحة HTML واحدة، لكن بيظهر components مختلفة بناءً على الـ URL.</p>
+<p>مش بتروح للـ server لكل صفحة. Angular بيبدل الـ component اللي في <span class="hl-green">&lt;router-outlet&gt;</span> تلقائياً عند تغيير الـ URL.</p>
+<p>الفرق الكبير: <span class="hl-yellow">routerLink</span> بدل <span class="hl">href</span> — لأن href بيعمل full page reload وبيكسر الـ SPA.</p>`
+    },
+    {
+      icon:'🗂️', title:'مكونات الـ Router',
+      types:[
+        { t:'Routes Array', d:'مصفوفة بتربط كل path بـ component' },
+        { t:'router-outlet', d:'المكان اللي الـ component هيتعرض فيه' },
+        { t:'routerLink', d:'بديل href — تنقل بدون page reload' },
+        { t:'ActivatedRoute', d:'بياخد params من الـ URL (:id)' },
+        { t:'Router Service', d:'navigate() — تنقل برمجي من داخل TS' },
+        { t:'routerLinkActive', d:'يضيف CSS class للـ link النشط' },
+      ]
+    },
+    {
+      icon:'📅', title:'امتى وليه؟',
+      when:['تبني أي تطبيق بأكثر من صفحة','تحتاج URL مختلف لكل section','تحتاج تمرر ID في الـ URL (/students/5)','تحتاج protected routes (login required)'],
+      why:['المستخدم يقدر يحفظ أو يشارك الـ URL','Back/Forward buttons في الـ browser بتشتغل','Lazy Loading — تحمل الكود بس لما يحتاجه','أفضل بكتير من إخفاء وإظهار divs يدوياً']
+    },
+    {
+      icon:'💻', title:'كود',
+      code:`<span class="cm">// app-routing.module.ts</span>
+<span class="kw">const</span> routes: <span class="typ">Routes</span> = [
+  { path: <span class="str">''</span>,             component: <span class="typ">HomeComponent</span>   },
+  { path: <span class="str">'students'</span>,     component: <span class="typ">StudentsComponent</span>},
+  { path: <span class="str">'students/:id'</span>, component: <span class="typ">DetailComponent</span>  },
+  { path: <span class="str">'**'</span>,           redirectTo: <span class="str">''</span>             },
+];
+
+<span class="cm">// app.component.html</span>
+<span class="tag">&lt;nav&gt;</span>
+  <span class="tag">&lt;a</span> <span class="att">routerLink</span>=<span class="val">"/"</span> <span class="att">routerLinkActive</span>=<span class="val">"active"</span><span class="tag">&gt;</span>Home<span class="tag">&lt;/a&gt;</span>
+  <span class="tag">&lt;a</span> <span class="att">routerLink</span>=<span class="val">"/students"</span> <span class="att">routerLinkActive</span>=<span class="val">"active"</span><span class="tag">&gt;</span>Students<span class="tag">&lt;/a&gt;</span>
+<span class="tag">&lt;/nav&gt;</span>
+<span class="tag">&lt;router-outlet&gt;&lt;/router-outlet&gt;</span>  <span class="cm">&lt;!-- هنا بيتعرض الـ component --&gt;</span>
+
+<span class="cm">// detail.component.ts — قراءة الـ :id من URL</span>
+<span class="kw">constructor</span>(<span class="kw">private</span> route: <span class="typ">ActivatedRoute</span>) {}
+
+<span class="fn">ngOnInit</span>() {
+  <span class="kw">const</span> id = this.route.snapshot.paramMap.<span class="fn">get</span>(<span class="str">'id'</span>);
+  <span class="cm">// id = '5' لو الـ URL كان /students/5</span>
+}
+
+<span class="cm">// التنقل برمجياً من TS</span>
+<span class="kw">constructor</span>(<span class="kw">private</span> router: <span class="typ">Router</span>) {}
+this.router.<span class="fn">navigate</span>([<span class="str">'/students'</span>, student.id]);`
+    },
+    {
+      icon:'🎯', title:'أسئلة الإنترفيو',
+      qa:[
+        { q:'ما هو router-outlet وليه مهم؟', a:'router-outlet هو placeholder بيحدد المكان اللي Angular Router هيعرض فيه الـ component بتاع الـ route الحالية. بدونه Angular مش عارف يحط الـ component فين. بتحطه في الـ app.component.html وAngular تلقائياً بيبدل المحتوى لما الـ URL يتغير.' },
+        { q:'ما الفرق بين routerLink وhref؟', a:'href يعمل full page reload — يطلب الـ HTML من السيرفر من الأول، بيخسر كل الـ state، وبطيء. routerLink بيبدل الـ URL ويغير الـ component بدون إعادة تحميل. في Angular دايماً استخدم routerLink — href بيكسر الـ SPA.' },
+        { q:'ما هو Lazy Loading في الـ Routing؟', a:'Lazy Loading يعني إن Angular ما بيحملش كل الكود من الأول — بيحمل كل module بس لما المستخدم يروح للـ route بتاعه. بيتعمل بـ loadChildren في الـ routes. النتيجة: أول تحميل للتطبيق أسرع بكتير، خصوصاً مع التطبيقات الكبيرة.' },
+      ]
+    }
+  ]
+},
+
+// 6. SERVICES
+{
+  num:'07', eyebrow:'Angular Core',
+  title:'Services',
+  subtitle:'الـ logic والـ data في مكان واحد — Single Responsibility',
+  sections:[
+    {
+      icon:'💡', title:'يعني إيه؟',
+      body:`<p>Service هي class TypeScript عادية بـ <span class="hl">@Injectable()</span> decorator.<br>
+وظيفتها إنها تفصل الـ <span class="hl-green">business logic</span> والـ <span class="hl-green">data</span> عن الـ components.</p>
+<p>الـ components المفروض تبقى مسؤولة عن الـ <span class="hl-yellow">UI فقط</span>. كل حاجة تانية (API calls, data management, shared state) روحها في Service.</p>
+<p>Angular بيستخدم <span class="hl">Dependency Injection (DI)</span> — يعني بدل ما تعمل <code>new StudentService()</code>، بتحط الـ Service في الـ constructor وAngular بيعملها inject تلقائياً.</p>`
+    },
+    {
+      icon:'🗂️', title:'أنواع الـ Services',
+      types:[
+        { t:'Data Service', d:'تخزين وإدارة البيانات (CRUD)' },
+        { t:'HTTP Service', d:'التواصل مع الـ API (HttpClient)' },
+        { t:'Auth Service', d:'تسجيل الدخول وإدارة الجلسة' },
+        { t:'Shared State', d:'مشاركة بيانات بين components مختلفة' },
+        { t:'Utility Service', d:'helper functions مشتركة' },
+      ]
+    },
+    {
+      icon:'📅', title:'امتى وليه؟',
+      when:['عندك data محتاجة في أكثر من component','محتاج تعمل HTTP requests للـ API','محتاج تعمل authentication logic','عندك business logic معقدة مش مكانها في الـ component'],
+      why:['DRY — الكود مكتوب مرة واحدة وبيتستخدم في كل حتة','Unit Testing أسهل — تقدر تـtest الـ service بمعزل','Singleton بـ providedIn: root — نسخة واحدة لكل التطبيق','فصل المسؤوليات = كود أنظف وأسهل في الـ maintenance']
+    },
+    {
+      icon:'💻', title:'كود',
+      code:`<span class="cm">// student.service.ts</span>
+<span class="dec">@Injectable</span>({ providedIn: <span class="str">'root'</span> }) <span class="cm">// singleton — نسخة واحدة</span>
+<span class="kw">export class</span> <span class="typ">StudentService</span> {
+
+  <span class="kw">private</span> students: <span class="typ">Student</span>[] = [
+    { id: <span class="num">1</span>, name: <span class="str">'Ahmed'</span>, gpa: <span class="num">3.8</span> }
+  ];
+
+  <span class="fn">getAll</span>(): <span class="typ">Student</span>[] {
+    <span class="kw">return</span> [...this.students]; <span class="cm">// copy — لا تكشف الأصل</span>
+  }
+
+  <span class="fn">add</span>(student: <span class="typ">Student</span>): <span class="typ">void</span> {
+    this.students.<span class="fn">push</span>(student);
+  }
+
+  <span class="fn">delete</span>(id: <span class="typ">number</span>): <span class="typ">void</span> {
+    this.students = this.students.<span class="fn">filter</span>(s => s.id !== id);
+  }
+}
+
+<span class="cm">// home.component.ts — Dependency Injection</span>
+<span class="kw">export class</span> <span class="typ">HomeComponent</span> {
+  students: <span class="typ">Student</span>[] = [];
+
+  <span class="cm">// Angular بيـinject الـ service تلقائياً</span>
+  <span class="kw">constructor</span>(<span class="kw">private</span> studentService: <span class="typ">StudentService</span>) {}
+
+  <span class="fn">ngOnInit</span>() {
+    this.students = this.studentService.<span class="fn">getAll</span>();
+  }
+}`
+    },
+    {
+      icon:'🎯', title:'أسئلة الإنترفيو',
+      qa:[
+        { q:'ما هو providedIn: "root" ومعناه؟', a:'providedIn: "root" معناه إن الـ service بتكون Singleton على مستوى كل التطبيق — Angular بيعمل نسخة واحدة بس ويشاركها بين كل الـ components. البديل هو providedIn: component لو عايز كل component تاخد نسخة منفصلة.' },
+        { q:'ما هو Dependency Injection؟', a:'بدل ما تعمل new StudentService() بنفسك، بتحط الـ Service في constructor parameter وAngular بيـcreate الـ instance وبيـinject ها تلقائياً. الفايدة: تقدر تـ mock الـ service في الـ tests بسهولة، ومش محتاج تعرف إزاي الـ service بتتبني.' },
+        { q:'ما الفرق بين Service وComponent؟', a:'Component مسؤول عن الـ UI فقط — عرض البيانات والتفاعل مع المستخدم. Service مسؤول عن الـ logic والـ data — fetching, processing, storing. الفصل ده بيخلي كل part سهل التعديل والـ testing بشكل مستقل.' },
+      ]
+    }
+  ]
+},
+
+// 7. BEHAVIORSUBJECT
+{
+  num:'08', eyebrow:'RxJS',
+  title:'BehaviorSubject',
+  subtitle:'حالة تفاعلية — كل subscriber بياخد آخر قيمة فوراً',
+  sections:[
+    {
+      icon:'💡', title:'يعني إيه؟',
+      body:`<p><span class="hl">BehaviorSubject</span> هو نوع من الـ Observable بيخزن <span class="hl-green">آخر قيمة</span> ويبعتها لأي subscriber جديد فوراً.</p>
+<p>فكّره كـ <span class="hl-yellow">متغير تفاعلي</span> — أي component بـ subscribe فيه بياخد القيمة الحالية ولما تتغير القيمة كل الـ subscribers بياخدوا التحديث تلقائياً.</p>
+<p>بتعمله بـ: <span class="hl">new BehaviorSubject&lt;T&gt;(initialValue)</span><br>
+وبتغير قيمته بـ: <span class="hl-green">.next(newValue)</span><br>
+وبتاخد قيمته الحالية بدون subscribe بـ: <span class="hl-blue">.value</span></p>`
+    },
+    {
+      icon:'🗂️', title:'الفرق بين الأنواع',
+      types:[
+        { t:'Subject', d:'مش بيخزن قيمة — subscriber جديد ما بياخدش حاجة' },
+        { t:'BehaviorSubject', d:'بيخزن آخر قيمة — subscriber جديد بياخدها فوراً' },
+        { t:'ReplaySubject', d:'بيخزن آخر N قيم — subscriber بياخد التاريخ' },
+        { t:'AsyncSubject', d:'بيبعت بس القيمة الأخيرة عند complete()' },
+      ]
+    },
+    {
+      icon:'📅', title:'امتى وليه؟',
+      when:['قائمة students مشتركة بين أكثر من component','Auth state (isLoggedIn) — كل component محتاج يعرفه','Loading state — تشغل spinner في component وتوقفه من component تاني','أي state محتاج يتشارك ويتحدث reactively'],
+      why:['كل component بيشوف نفس البيانات فوراً','مش محتاج Input/Output chains طويلة','الـ state دايماً consistent','بيشتغل مع async pipe بشكل ممتاز']
+    },
+    {
+      icon:'💻', title:'كود',
+      code:`<span class="cm">// student.service.ts</span>
+<span class="kw">import</span> { BehaviorSubject } <span class="kw">from</span> <span class="str">'rxjs'</span>;
+
+<span class="kw">export class</span> <span class="typ">StudentService</span> {
+
+  <span class="cm">// Private — بس الـ service تقدر تغير القيمة</span>
+  <span class="kw">private</span> _students$ = <span class="kw">new</span> <span class="typ">BehaviorSubject</span>&lt;<span class="typ">Student</span>[]&gt;([]);
+
+  <span class="cm">// Public Observable — الـ components تقرأ بس</span>
+  students$ = this._students$.<span class="fn">asObservable</span>();
+
+  <span class="fn">add</span>(student: <span class="typ">Student</span>) {
+    <span class="kw">const</span> current = this._students$.value;  <span class="cm">// القيمة الحالية</span>
+    this._students$.<span class="fn">next</span>([...current, student]);  <span class="cm">// بعت القيمة الجديدة</span>
+  }
+
+  <span class="fn">delete</span>(id: <span class="typ">number</span>) {
+    this._students$.<span class="fn">next</span>(
+      this._students$.value.<span class="fn">filter</span>(s => s.id !== id)
+    );
+  }
+}
+
+<span class="cm">// home.component.html — بيشوف التحديثات تلقائياً</span>
+<span class="tag">&lt;div</span> <span class="att">*ngFor</span>=<span class="val">"let s of students$ | async"</span><span class="tag">&gt;</span>
+  {{ s.name }}
+<span class="tag">&lt;/div&gt;</span>`
+    },
+    {
+      icon:'🎮', title:'جرب بنفسك',
+      demo:'behaviorsubject'
+    },
+    {
+      icon:'🎯', title:'أسئلة الإنترفيو',
+      qa:[
+        { q:'ما الفرق بين BehaviorSubject وSubject؟', a:'Subject: لو اشتركت بعد ما القيمة اتبعتت، ما هتاخدش حاجة — زي إذاعة فاتتك. BehaviorSubject: بيخزن آخر قيمة، فأي subscriber جديد بياخدها فوراً حتى لو كان subscribe بعدها. في حالة State Management، دايماً BehaviorSubject أفضل عشان كل component جديد بياخد الـ state الحالي.' },
+        { q:'ليه بنعمل Private _subject وPublic asObservable()؟', a:'عشان نمنع الـ components من تغيير الـ state مباشرة. لو الـ BehaviorSubject public، أي component يقدر يعمل .next() ويغير البيانات بدون ما نعرف. asObservable() بتحوله لـ read-only observable — الـ components تقدر تقرأ بس والتغيير يمر بالـ service فقط.' },
+        { q:'إزاي BehaviorSubject أحسن من plain array في Service؟', a:'Plain array: لو Component A أضاف student، Component B ما بيعرفش إلا لما يعمل getAll() من جديد يدوياً. BehaviorSubject: Component B عنده subscribe على students$، فلما أي حد يعمل next()، B بياخد التحديث تلقائياً وفوراً بدون أي كود زيادة.' },
+      ]
+    }
+  ]
+},
+
+// 8. OBSERVABLE
+{
+  num:'09', eyebrow:'RxJS',
+  title:'Observable',
+  subtitle:'تدفق بيانات غير متزامن — الأساس في Angular',
+  sections:[
+    {
+      icon:'💡', title:'يعني إيه؟',
+      body:`<p><span class="hl">Observable</span> هو "مجرى من البيانات" — بيبعت قيم على مدار الوقت وأنت بـ <span class="hl-green">subscribe</span> عليه تستقبلها.</p>
+<p>فكره كإنك عامل اشتراك في channel — كل ما البيانات تتحدث، بياخد التحديث. ولما تنهي الاشتراك بتعمل <span class="hl-yellow">unsubscribe</span> عشان متحصلش memory leak.</p>
+<p>Angular بيستخدم Observables في كل حتة: <span class="hl-green">HttpClient</span> بيرجع Observable، <span class="hl-blue">ActivatedRoute.params</span> Observable، <span class="hl-green">FormControl.valueChanges</span> Observable.</p>`
+    },
+    {
+      icon:'🗂️', title:'الطرق الأساسية',
+      types:[
+        { t:'.subscribe()', d:'ابدأ الاستقبال — بياخد: next, error, complete' },
+        { t:'.pipe()', d:'تمرير الـ data من operators زي map وfilter' },
+        { t:'map()', d:'حوّل كل قيمة لقيمة تانية' },
+        { t:'filter()', d:'خد بس القيم اللي بتعدي الشرط' },
+        { t:'tap()', d:'افعل حاجة جنب (log مثلاً) بدون تغيير القيمة' },
+        { t:'takeUntil()', d:'وقف الـ subscribe تلقائياً لما condition يتحقق' },
+      ]
+    },
+    {
+      icon:'📅', title:'امتى وليه؟',
+      when:['HTTP requests — HttpClient.get() بيرجع Observable','Real-time data — WebSocket, Server-Sent Events','Form value changes — valueChanges على كل input','Route params — لما الـ ID في الـ URL يتغير'],
+      why:['بتتعامل مع async بشكل نظيف بدون callback hell','Operators زي map, filter, debounceTime بتفيدك جداً','Cancellable — تقدر توقف الـ request','Composable — تركب observables مع بعض']
+    },
+    {
+      icon:'💻', title:'كود',
+      code:`<span class="cm">// HTTP request — بيرجع Observable</span>
+<span class="kw">import</span> { HttpClient } <span class="kw">from</span> <span class="str">'@angular/common/http'</span>;
+<span class="kw">import</span> { map, filter } <span class="kw">from</span> <span class="str">'rxjs/operators'</span>;
+
+<span class="kw">export class</span> <span class="typ">StudentService</span> {
+  <span class="kw">constructor</span>(<span class="kw">private</span> http: <span class="typ">HttpClient</span>) {}
+
+  <span class="fn">getStudents</span>() {
+    <span class="kw">return</span> this.http.<span class="fn">get</span>&lt;<span class="typ">Student</span>[]&gt;(<span class="str">'/api/students'</span>).<span class="fn">pipe</span>(
+      <span class="fn">map</span>(students => students.<span class="fn">filter</span>(s => s.gpa > <span class="num">3.0</span>)),
+      <span class="fn">tap</span>(data => console.<span class="fn">log</span>(<span class="str">'Fetched:'</span>, data))
+    );
+  }
+}
+
+<span class="cm">// component.ts — subscribe يدوي (لازم unsubscribe)</span>
+<span class="kw">export class</span> <span class="typ">HomeComponent</span> <span class="kw">implements</span> <span class="typ">OnInit</span>, <span class="typ">OnDestroy</span> {
+  students: <span class="typ">Student</span>[] = [];
+  <span class="kw">private</span> destroy$ = <span class="kw">new</span> <span class="typ">Subject</span>&lt;<span class="typ">void</span>&gt;();
+
+  <span class="fn">ngOnInit</span>() {
+    this.service.<span class="fn">getStudents</span>()
+      .<span class="fn">pipe</span>(<span class="fn">takeUntil</span>(this.destroy$))  <span class="cm">// auto-unsubscribe</span>
+      .<span class="fn">subscribe</span>(data => this.students = data);
+  }
+
+  <span class="fn">ngOnDestroy</span>() { this.destroy$.<span class="fn">next</span>(); } <span class="cm">// cleanup</span>
+}
+
+<span class="cm">// أو ببساطة استخدم async pipe في HTML — أحسن !</span>
+<span class="tag">&lt;div</span> <span class="att">*ngFor</span>=<span class="val">"let s of students$ | async"</span><span class="tag">&gt;</span>{{ s.name }}<span class="tag">&lt;/div&gt;</span>`
+    },
+    {
+      icon:'🎮', title:'جرب بنفسك',
+      demo:'observable'
+    },
+    {
+      icon:'🎯', title:'أسئلة الإنترفيو',
+      qa:[
+        { q:'ما الفرق بين Observable وPromise؟', a:'Promise: بيبعت قيمة واحدة بس ومش قابل للإلغاء. Observable: بيبعت قيم متعددة على مدار الوقت وقابل للإلغاء بـ unsubscribe(). كمان Observable كسول (lazy) — ما بيبدأش إلا لما حد يعمل subscribe. في Angular استخدم Observable دايماً مع HttpClient.' },
+        { q:'ما هو memory leak في context الـ Observables؟', a:'لو عملت subscribe يدوي ومعملتش unsubscribe، الـ Observable بيفضل شغال حتى بعد ما الـ component يتدمر. الحل: إما async pipe (بيعمل unsubscribe تلقائياً)، أو takeUntil(destroy$)، أو unsubscribe في ngOnDestroy.' },
+        { q:'إيه هو الفرق بين Cold وHot Observable؟', a:'Cold Observable: كل subscriber بياخد نسخة منفصلة من الـ data من الأول. مثال: HttpClient.get() — كل subscribe بيعمل HTTP request جديد. Hot Observable: البيانات بتتدفق بغض النظر عن الـ subscribers. مثال: WebSocket أو BehaviorSubject — كل الـ subscribers بيشوفوا نفس الـ stream.' },
+      ]
+    }
+  ]
+},
+
+// 9. ASYNC PIPE
+{
+  num:'10', eyebrow:'Angular Pipes',
+  title:'Async Pipe',
+  subtitle:'subscribe وunsubscribe تلقائي في الـ template',
+  sections:[
+    {
+      icon:'💡', title:'يعني إيه؟',
+      body:`<p><span class="hl">Async Pipe</span> بتفحص الـ Observable أو Promise وبتعمل subscribe تلقائياً وبتعرض القيمة في الـ HTML، وبتعمل <span class="hl-green">unsubscribe تلقائي</span> لما الـ component يتدمر.</p>
+<p>بدل ما تعمل subscribe يدوي في TS وتحتفظ بـ property:
+<span class="hl-yellow">this.students = await this.service.getStudents()</span><br>
+بتكتب في الـ HTML مباشرةً:
+<span class="hl-green">*ngFor="let s of students$ | async"</span></p>
+<p>الـ async pipe بيوقف وبيكمل change detection بذكاء — بيعمل update للـ view بس لما القيمة تتغير فعلاً.</p>`
+    },
+    {
+      icon:'🗂️', title:'استخداماته',
+      types:[
+        { t:'مع *ngFor', d:'*ngFor="let s of list$ | async"' },
+        { t:'مع *ngIf', d:'*ngIf="data$ | async as data"' },
+        { t:'مع Interpolation', d:'{{ value$ | async }}' },
+        { t:'مع ngClass', d:'[ngClass]="cls$ | async"' },
+        { t:'as keyword', d:'*ngIf="data$ | async as d" ثم استخدم d' },
+      ]
+    },
+    {
+      icon:'📅', title:'امتى وليه؟',
+      when:['عندك Observable أو BehaviorSubject في Service','بتعرض data في الـ template','عايز تتجنب كتابة subscribe يدوي','بتبني تطبيق بدون memory leaks'],
+      why:['مفيش memory leak — Angular بيعمل unsubscribe تلقائياً','الكود أقل وأنظف — مش محتاج properties وسيطة','بيدعم OnPush change detection strategy','أفضل practice في Angular apps']
+    },
+    {
+      icon:'💻', title:'كود',
+      code:`<span class="cm">// ❌ الطريقة القديمة — محتاج تدير الـ subscription يدوي</span>
+<span class="kw">export class</span> <span class="typ">HomeComponent</span> <span class="kw">implements</span> <span class="typ">OnInit</span>, <span class="typ">OnDestroy</span> {
+  students: <span class="typ">Student</span>[] = [];
+  <span class="kw">private</span> sub!: <span class="typ">Subscription</span>;
+
+  <span class="fn">ngOnInit</span>() {
+    this.sub = this.service.students$.<span class="fn">subscribe</span>(s => this.students = s);
+  }
+  <span class="fn">ngOnDestroy</span>() { this.sub.<span class="fn">unsubscribe</span>(); } <span class="cm">// لازم!</span>
+}
+
+<span class="cm">// ✅ الطريقة الصح مع Async Pipe</span>
+<span class="kw">export class</span> <span class="typ">HomeComponent</span> {
+  students$ = this.service.students$;  <span class="cm">// بس كده!</span>
+  <span class="kw">constructor</span>(<span class="kw">private</span> service: <span class="typ">StudentService</span>) {}
+}
+
+<span class="cm">&lt;!-- HTML --&gt;</span>
+<span class="cm">&lt;!-- *ngFor مع async --&gt;</span>
+<span class="tag">&lt;div</span> <span class="att">*ngFor</span>=<span class="val">"let s of students$ | async"</span><span class="tag">&gt;</span>{{ s.name }}<span class="tag">&lt;/div&gt;</span>
+
+<span class="cm">&lt;!-- *ngIf مع async as — الأحسن! --&gt;</span>
+<span class="tag">&lt;ng-container</span> <span class="att">*ngIf</span>=<span class="val">"students$ | async as students"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;p&gt;</span>Total: {{ students.length }}<span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;div</span> <span class="att">*ngFor</span>=<span class="val">"let s of students"</span><span class="tag">&gt;</span>{{ s.name }}<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/ng-container&gt;</span>
+
+<span class="cm">&lt;!-- Loading state --&gt;</span>
+<span class="tag">&lt;app-spinner</span> <span class="att">*ngIf</span>=<span class="val">"loading$ | async"</span><span class="tag">&gt;&lt;/app-spinner&gt;</span>`
+    },
+    {
+      icon:'🎯', title:'أسئلة الإنترفيو',
+      qa:[
+        { q:'ليه async pipe أفضل من subscribe اليدوي؟', a:'3 أسباب: أول حاجة، مفيش memory leak — Angular بيعمل unsubscribe تلقائياً لما الـ component يتدمر. تاني حاجة، الكود أقل — مش محتاج property وسيطة ولا ngOnDestroy. تالت حاجة، يشتغل كويس مع OnPush Change Detection Strategy.' },
+        { q:'ما هو "as" keyword مع async pipe وفايدته؟', a:'"*ngIf="obs$ | async as data" بتخليك تستخدم الـ data اللي جاية من الـ Observable في الـ template بدون ما تعيد كتابة "| async" في كل مكان. كمان بتتجنب إنك تعمل subscribe على نفس الـ Observable أكتر من مرة." ' },
+        { q:'هل async pipe بيعمل subscribe واحد أو أكتر؟', a:'لو كتبت {{ data$ | async }} و *ngFor="let d of data$ | async" في نفس الـ template، Angular بيعمل subscribe منفصل لكل pipe. الحل: استخدم *ngIf="data$ | async as d" مرة واحدة في ng-container وجوا استخدم d مباشرةً — ده subscribe واحد بس.' },
+      ]
+    }
+  ]
+},
+
+// 10. INPUT/OUTPUT
+{
+  num:'11', eyebrow:'Component Communication',
+  title:'@Input & @Output',
+  subtitle:'التواصل بين الـ Parent والـ Child components',
+  sections:[
+    {
+      icon:'💡', title:'يعني إيه؟',
+      body:`<p>لما بتبني تطبيق Angular، بيكون عندك components بتحتوي على components تانية.<br>
+<span class="hl">@Input</span> بيخلي الـ parent يمرر data للـ child.<br>
+<span class="hl-green">@Output</span> بيخلي الـ child يبلغ الـ parent بـ event حصل.</p>
+<p>القاعدة الذهبية:<br>
+<span class="hl-yellow">البيانات تنزل ↓</span> من parent لـ child بـ @Input<br>
+<span class="hl-green">الأحداث تصعد ↑</span> من child لـ parent بـ @Output + EventEmitter</p>
+<p>ده بيخلي كل component مستقل — بياخد بياناته من parent وبيبلغه بالتغييرات.</p>`
+    },
+    {
+      icon:'🗂️', title:'الأنواع',
+      types:[
+        { t:'@Input() value', d:'استقبال قيمة بسيطة من parent' },
+        { t:'@Input() object', d:'استقبال object كامل زي Student' },
+        { t:'@Input() with alias', d:'@Input("studentData") student — اسم مختلف' },
+        { t:'@Output() EventEmitter', d:'إرسال event لـ parent بدون قيمة' },
+        { t:'@Output() with data', d:'EventEmitter<Student> — مع بيانات' },
+        { t:'Two-way [(binding)]', d:'@Input + @Output معاً = Two-Way Binding' },
+      ]
+    },
+    {
+      icon:'📅', title:'امتى وليه؟',
+      when:['عندك Student Card بتحتاج student object من parent','عندك Delete button في Card محتاج يبلغ parent','عندك Form Component محتاج يرجع بيانات لـ parent','بتبني component قابل لـ reuse في أماكن متعددة'],
+      why:['كل component مسؤوليته واضحة ومنفصلة','الـ components بتبقى قابلة لـ reuse في أماكن مختلفة','Data flow واضح — تعرف من فين البيانات جاية ورايحة فين','أسهل في الـ testing والـ debugging']
+    },
+    {
+      icon:'💻', title:'كود',
+      code:`<span class="cm">// student-card.component.ts (CHILD)</span>
+<span class="kw">export class</span> <span class="typ">StudentCardComponent</span> {
+
+  <span class="cm">// @Input — بياخد data من parent</span>
+  <span class="dec">@Input</span>() student!: <span class="typ">Student</span>;
+  <span class="dec">@Input</span>() showActions = <span class="kw">true</span>;
+
+  <span class="cm">// @Output — بيبعت event للـ parent</span>
+  <span class="dec">@Output</span>() deleteRequested = <span class="kw">new</span> <span class="typ">EventEmitter</span>&lt;<span class="typ">number</span>&gt;();
+  <span class="dec">@Output</span>() editRequested   = <span class="kw">new</span> <span class="typ">EventEmitter</span>&lt;<span class="typ">Student</span>&gt;();
+
+  <span class="fn">onDelete</span>() {
+    this.deleteRequested.<span class="fn">emit</span>(this.student.id);  <span class="cm">// بعت الـ ID للـ parent</span>
+  }
+
+  <span class="fn">onEdit</span>() {
+    this.editRequested.<span class="fn">emit</span>(this.student);  <span class="cm">// بعت الـ student كاملاً</span>
+  }
+}
+
+<span class="cm">&lt;!-- students-list.component.html (PARENT) --&gt;</span>
+<span class="tag">&lt;app-student-card</span>
+  <span class="att">*ngFor</span>=<span class="val">"let s of students"</span>
+  <span class="att">[student]</span>=<span class="val">"s"</span>                           <span class="cm">&lt;!-- @Input --&gt;</span>
+  <span class="att">[showActions]</span>=<span class="val">"true"</span>                   <span class="cm">&lt;!-- @Input --&gt;</span>
+  <span class="att">(deleteRequested)</span>=<span class="val">"onDelete($event)"</span>   <span class="cm">&lt;!-- @Output --&gt;</span>
+  <span class="att">(editRequested)</span>=<span class="val">"onEdit($event)"</span><span class="tag">&gt;</span>     <span class="cm">&lt;!-- @Output --&gt;</span>
+<span class="tag">&lt;/app-student-card&gt;</span>
+
+<span class="cm">// parent.component.ts</span>
+<span class="fn">onDelete</span>(id: <span class="typ">number</span>) {
+  this.studentService.<span class="fn">delete</span>(id);  <span class="cm">// $event = الـ id اللي جاي من child</span>
+}`
+    },
+    {
+      icon:'🎮', title:'جرب بنفسك',
+      demo:'inputoutput'
+    },
+    {
+      icon:'🎯', title:'أسئلة الإنترفيو',
+      qa:[
+        { q:'ليه نستخدم @Output بدل ما نمرر reference للـ parent؟', a:'لو مررت reference للـ parent service أو function مباشرةً للـ child، بتكون tight coupling — الـ child بيعرف تفاصيل الـ parent. @Output بيخلي الـ child isolated تماماً — بس بيبعت event بدون ما يعرف مين بيسمعه. ده بيخلي الـ child reusable في أي parent.' },
+        { q:'ما هو EventEmitter وإزاي يشتغل؟', a:'EventEmitter هو class بيرث من Subject في RxJS. لما بتعمل emit()، بيبعت القيمة لكل الـ parent components اللي عاملين (event binding) عليه. Angular بيعمل subscribe تلقائياً على الـ EventEmitter لما الـ parent يكتب (deleteRequested)="onDelete($event)".' },
+        { q:'إيه هو Two-Way Binding [(ngModel)] وعلاقته بـ @Input/@Output؟', a:'[(ngModel)] هو syntactic sugar لـ @Input + @Output. بدل ما تكتب [value]="name" و(valueChange)="name=$event"، بتكتب [(value)]="name". الـ ngModel في FormsModule مبني على نفس مبدأ @Input و@Output. لو بنيت custom two-way binding، بتعمل @Input() myVal و@Output() myValChange.' },
+      ]
+    }
+  ]
+},
+
+]; // end topics array
+
+// ──────────────────────────────────────────────────────────────
+// RENDER ENGINE
+// ──────────────────────────────────────────────────────────────
+function renderCode(c){ return `<div class="code-block"><div class="code-block-header"><span class="code-lang">TypeScript / HTML</span><div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div></div><pre>${c}</pre></div>`; }
+
+function renderSection(sec){
+  let html = `<div class="section"><div class="section-head"><span class="section-icon">${sec.icon}</span><span class="section-title">${sec.title}</span></div><div class="section-body">`;
+
+  if(sec.body) html += sec.body;
+  if(sec.types){ html += `<div class="types-grid">`; sec.types.forEach(t=>{ html+=`<div class="type-card"><div class="type-card-title">${t.t}</div><div class="type-card-desc">${t.d}</div></div>`; }); html+=`</div>`; }
+  if(sec.when){ html+=`<div class="when-grid"><div class="when-card when"><div class="when-card-label">✦ امتى تستخدمه</div><ul class="when-list">${sec.when.map(w=>`<li>${w}</li>`).join('')}</ul></div><div class="when-card why"><div class="when-card-label">✦ ليه تستخدمه</div><ul class="when-list">${sec.why.map(w=>`<li>${w}</li>`).join('')}</ul></div></div>`; }
+  if(sec.code) html += renderCode(sec.code);
+  if(sec.demo) html += renderDemo(sec.demo);
+  if(sec.qa){
+    html += `<div class="qa-list">`;
+    sec.qa.forEach((q,i)=>{
+      html += `<div class="qa-item" id="qa-${sec.demo||'x'}-${i}">
+        <div class="qa-q" onclick="toggleQA('qa-${sec.demo||'x'}-${i}')">
+          <span class="qa-badge">Q${i+1}</span>
+          ${q.q}
+          <span class="qa-arrow">▾</span>
+        </div>
+        <div class="qa-a">${q.a}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+  html += `</div></div>`;
+  return html;
+}
+
+function renderTopic(t){
+  return `
+    <div class="topic-header">
+      <div class="topic-eyebrow">${t.num} — ${t.eyebrow}</div>
+      <h1 class="topic-title">${t.title}</h1>
+      <p class="topic-subtitle">${t.subtitle}</p>
+    </div>
+    <div class="content">
+      ${t.sections.map(renderSection).join('')}
+    </div>`;
+}
+
+function show(idx){
+  document.getElementById('main').innerHTML = renderTopic(topics[idx]);
+  document.querySelectorAll('.nav-item').forEach((el,i)=>el.classList.toggle('active',i===idx));
+  document.getElementById('main').scrollTo(0,0);
+  attachDemos(idx);
+}
+
+function toggleQA(id){
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+
+// ──────────────────────────────────────────────────────────────
+// DEMOS
+// ──────────────────────────────────────────────────────────────
+function renderDemo(type){
+  const demos = {
+    interpolation:`
+      <div class="demo-area">
+        <div class="demo-label">⚡ Live Demo — Interpolation</div>
+        <div class="demo-row"><label style="font-size:12px;color:var(--muted2);display:block;margin-bottom:4px">اكتب اسمك:</label>
+        <input class="demo-input" id="d-name" placeholder="Mahmoud" oninput="updateInterp()"></div>
+        <div class="demo-row"><label style="font-size:12px;color:var(--muted2);display:block;margin-bottom:4px">السعر:</label>
+        <input class="demo-input" id="d-price" type="number" value="100" oninput="updateInterp()"></div>
+        <div style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:6px">الـ HTML ناتج:</div>
+        <div class="demo-output" id="d-interp-out"></div>
+      </div>`,
+
+    property:`
+      <div class="demo-area">
+        <div class="demo-label">⚡ Live Demo — Property Binding</div>
+        <div class="demo-flex" style="margin-bottom:12px">
+          <button class="demo-btn" onclick="toggleProp()">Toggle [disabled]</button>
+          <button class="demo-btn green" onclick="toggleClass()">Toggle [class.active]</button>
+        </div>
+        <button id="d-prop-btn" style="padding:8px 20px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:13px;cursor:pointer">Target Button</button>
+        <div id="d-class-box" style="margin-top:10px;padding:10px;border-radius:8px;border:2px solid var(--border);font-size:12px;color:var(--muted2);transition:all 0.3s">Class Box (toggle active)</div>
+        <div class="demo-output" id="d-prop-out" style="margin-top:10px"></div>
+      </div>`,
+
+    event:`
+      <div class="demo-area">
+        <div class="demo-label">⚡ Live Demo — Event Binding</div>
+        <div class="demo-row">
+          <button class="demo-btn" onclick="incrCount()">Click me! (click)</button>
+          <button class="demo-btn" style="background:var(--surface)" onclick="resetCount()">Reset</button>
+        </div>
+        <div class="demo-output" id="d-count" style="margin-bottom:12px">Count: 0</div>
+        <label style="font-size:12px;color:var(--muted2);display:block;margin-bottom:4px">اكتب (keyup):</label>
+        <input class="demo-input" id="d-keyup" placeholder="اكتب هنا…" oninput="updateKeyup(event)">
+        <div class="demo-output" id="d-keyup-out">القيمة: </div>
+      </div>`,
+
+    ngif:`
+      <div class="demo-area">
+        <div class="demo-label">⚡ Live Demo — *ngIf</div>
+        <div class="demo-flex" style="margin-bottom:12px">
+          <button class="demo-btn" onclick="toggleLogin()">Toggle isLoggedIn</button>
+          <button class="demo-btn green" onclick="toggleLoad()">Toggle isLoading</button>
+        </div>
+        <div id="d-ngif-logged">
+          <div style="padding:10px;border-radius:8px;font-size:13px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:var(--green);margin-bottom:8px">✓ Welcome! You are logged in.</div>
+        </div>
+        <div id="d-ngif-guest" style="display:none">
+          <div style="padding:10px;border-radius:8px;font-size:13px;background:rgba(225,52,42,0.1);border:1px solid rgba(225,52,42,0.3);color:var(--accent2)">✗ Please log in first (else template)</div>
+        </div>
+        <div id="d-ngif-spinner" style="display:none;padding:10px;font-size:13px;color:var(--yellow)">⟳ Loading spinner is showing...</div>
+        <div class="demo-output" id="d-ngif-status">isLoggedIn: true | isLoading: false</div>
+      </div>`,
+
+    ngfor:`
+      <div class="demo-area">
+        <div class="demo-label">⚡ Live Demo — *ngFor</div>
+        <div class="demo-flex" style="margin-bottom:10px">
+          <input class="demo-input" id="d-for-name" placeholder="اسم الطالب" style="max-width:160px">
+          <button class="demo-btn" onclick="addForItem()">Add +</button>
+          <button class="demo-btn" style="background:var(--surface)" onclick="clearForItems()">Clear</button>
+        </div>
+        <div id="d-for-list" style="display:flex;flex-direction:column;gap:6px;min-height:36px"></div>
+      </div>`,
+
+    behaviorsubject:`
+      <div class="demo-area">
+        <div class="demo-label">⚡ Live Demo — BehaviorSubject</div>
+        <p style="font-size:12px;color:var(--muted2);margin-bottom:10px">3 components بيشتركوا في نفس الـ BehaviorSubject. غيّر القيمة وشوف كل الـ components بتتحدث فوراً.</p>
+        <div class="demo-flex" style="margin-bottom:10px">
+          <input class="demo-input" id="d-bs-val" placeholder="القيمة الجديدة…" style="max-width:180px">
+          <button class="demo-btn" onclick="emitBS()">next() — بعت</button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-size:10px;color:var(--muted);margin-bottom:6px;font-family:var(--mono)">Component A</div>
+            <div id="d-bs-a" style="font-family:var(--mono);font-size:13px;color:var(--green)">—</div>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-size:10px;color:var(--muted);margin-bottom:6px;font-family:var(--mono)">Component B</div>
+            <div id="d-bs-b" style="font-family:var(--mono);font-size:13px;color:var(--blue)">—</div>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-size:10px;color:var(--muted);margin-bottom:6px;font-family:var(--mono)">Component C</div>
+            <div id="d-bs-c" style="font-family:var(--mono);font-size:13px;color:var(--yellow)">—</div>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--muted);font-family:var(--mono)" id="d-bs-log">Stream: (waiting for first value...)</div>
+      </div>`,
+
+    observable:`
+      <div class="demo-area">
+        <div class="demo-label">⚡ Live Demo — Observable Stream</div>
+        <p style="font-size:12px;color:var(--muted2);margin-bottom:10px">Observable بيبعت قيم على مدار الوقت. اضغط Start لتشغيل stream.</p>
+        <div class="demo-flex" style="margin-bottom:10px">
+          <button class="demo-btn" onclick="startObs()">▶ Subscribe</button>
+          <button class="demo-btn" style="background:var(--accent);opacity:0.7" onclick="stopObs()">■ Unsubscribe</button>
+        </div>
+        <div class="stream-viz" id="d-obs-stream"></div>
+        <div class="demo-output" id="d-obs-status" style="margin-top:8px">Status: Not subscribed</div>
+      </div>`,
+
+    inputoutput:`
+      <div class="demo-area">
+        <div class="demo-label">⚡ Live Demo — @Input / @Output</div>
+        <p style="font-size:12px;color:var(--muted2);margin-bottom:10px">Parent يمرر student لـ Child Card بـ @Input، والـ Card بيبعت delete event لـ Parent بـ @Output.</p>
+        <div style="background:var(--bg);border:1px dashed var(--border2);border-radius:10px;padding:14px;margin-bottom:10px">
+          <div style="font-size:10px;color:var(--muted);margin-bottom:8px;font-family:var(--mono)">PARENT COMPONENT</div>
+          <div class="demo-flex">
+            <input class="demo-input" id="d-io-name" placeholder="اسم الطالب" style="max-width:160px">
+            <input class="demo-input" id="d-io-gpa"  placeholder="GPA" type="number" step="0.1" min="0" max="4" style="max-width:80px">
+            <button class="demo-btn" onclick="addIOStudent()">Send @Input ↓</button>
+          </div>
+          <div style="font-size:11px;color:var(--muted2);margin-top:8px" id="d-io-parent-log">لما الـ Child يبعت delete event، هيظهر هنا ↑</div>
+        </div>
+        <div id="d-io-cards" style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:12px;color:var(--muted);text-align:center;padding:16px">لا يوجد students — ابعت @Input من الـ Parent</div>
+        </div>
+      </div>`,
+  };
+  return demos[type] || '';
+}
+
+// ──────────────────────────────────────────────────────────────
+// DEMO LOGIC
+// ──────────────────────────────────────────────────────────────
+let propDisabled = false, propActive = false;
+let countVal = 0;
+let ngifLogin = true, ngifLoad = false;
+let forItems = [];
+let obsInterval = null, obsCount = 0;
+let ioStudents = [];
+
+function attachDemos(idx){ /* demos auto-attach via inline handlers */ }
+
+function updateInterp(){
+  const name = document.getElementById('d-name')?.value || 'Mahmoud';
+  const price = document.getElementById('d-price')?.value || 100;
+  const el = document.getElementById('d-interp-out');
+  if(el) el.innerHTML = `&lt;h1&gt;{{ name }}&lt;/h1&gt; → <b style="color:var(--green)">${name}</b> | &lt;p&gt;{{ price * 3 }}&lt;/p&gt; → <b style="color:var(--green)">${price*3}</b>`;
+}
+setTimeout(updateInterp, 50);
+
+function toggleProp(){
+  propDisabled = !propDisabled;
+  const btn = document.getElementById('d-prop-btn');
+  const out = document.getElementById('d-prop-out');
+  if(btn){ btn.disabled = propDisabled; btn.style.opacity = propDisabled ? '0.4' : '1'; }
+  if(out) out.textContent = `[disabled]="${propDisabled}" — الـ button ${propDisabled?'معطل':'مفعّل'}`;
+}
+
+function toggleClass(){
+  propActive = !propActive;
+  const box = document.getElementById('d-class-box');
+  if(box){
+    box.style.borderColor = propActive ? 'var(--accent)' : 'var(--border)';
+    box.style.color = propActive ? 'var(--accent2)' : 'var(--muted2)';
+    box.style.background = propActive ? 'rgba(225,52,42,0.08)' : 'transparent';
+    box.textContent = propActive ? 'class="active" ← class اتضاف' : 'Class Box (toggle active)';
+  }
+}
+
+function incrCount(){ countVal++; const el=document.getElementById('d-count'); if(el) el.textContent=`Count: ${countVal}`; }
+function resetCount(){ countVal=0; const el=document.getElementById('d-count'); if(el) el.textContent='Count: 0'; }
+function updateKeyup(e){ const el=document.getElementById('d-keyup-out'); if(el) el.textContent=`القيمة: ${e.target.value}`; }
+
+function toggleLogin(){
+  ngifLogin = !ngifLogin;
+  document.getElementById('d-ngif-logged').style.display = ngifLogin ? 'block' : 'none';
+  document.getElementById('d-ngif-guest').style.display  = ngifLogin ? 'none'  : 'block';
+  updateNgifStatus();
+}
+function toggleLoad(){
+  ngifLoad = !ngifLoad;
+  document.getElementById('d-ngif-spinner').style.display = ngifLoad ? 'block' : 'none';
+  updateNgifStatus();
+}
+function updateNgifStatus(){
+  const el = document.getElementById('d-ngif-status');
+  if(el) el.textContent = `isLoggedIn: ${ngifLogin} | isLoading: ${ngifLoad}`;
+}
+
+function addForItem(){
+  const inp = document.getElementById('d-for-name');
+  const name = inp?.value.trim() || 'Student';
+  forItems.push(name);
+  if(inp) inp.value='';
+  renderForList();
+}
+function clearForItems(){ forItems=[]; renderForList(); }
+function renderForList(){
+  const el = document.getElementById('d-for-list');
+  if(!el) return;
+  if(!forItems.length){ el.innerHTML='<div style="font-size:12px;color:var(--muted);text-align:center;padding:8px">Array فاضي — *ngFor ما بيعرضش حاجة</div>'; return; }
+  el.innerHTML = forItems.map((n,i)=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-size:13px">
+      <span><span style="color:var(--muted);font-family:var(--mono);font-size:11px">[${i}]</span> ${n}${i===0?' <span style="font-size:10px;color:var(--green)">(first)</span>':''}${i===forItems.length-1?' <span style="font-size:10px;color:var(--yellow)">(last)</span>':''}</span>
+      <button onclick="removeForItem(${i})" style="background:transparent;border:none;color:var(--accent);cursor:pointer;font-size:16px">×</button>
+    </div>`).join('');
+}
+function removeForItem(i){ forItems.splice(i,1); renderForList(); }
+
+function emitBS(){
+  const val = document.getElementById('d-bs-val')?.value;
+  if(!val) return;
+  const colors = ['var(--green)','var(--blue)','var(--yellow)'];
+  ['d-bs-a','d-bs-b','d-bs-c'].forEach((id,i)=>{
+    const el = document.getElementById(id);
+    if(el){ el.textContent=val; el.style.color=colors[i]; el.style.transform='scale(1.1)'; setTimeout(()=>el.style.transform='',200); }
+  });
+  const log = document.getElementById('d-bs-log');
+  if(log) log.textContent = `Stream: next("${val}") → 3 subscribers notified ✓`;
+  if(document.getElementById('d-bs-val')) document.getElementById('d-bs-val').value='';
+}
+
+function startObs(){
+  if(obsInterval) return;
+  const stream = document.getElementById('d-obs-stream');
+  const status = document.getElementById('d-obs-status');
+  const colors = ['#e1342a','#10b981','#3b82f6','#f59e0b','#8b5cf6'];
+  if(status) status.textContent = 'Status: Subscribed ✓ — receiving values...';
+  obsInterval = setInterval(()=>{
+    if(!document.getElementById('d-obs-stream')){ stopObs(); return; }
+    obsCount++;
+    const dot = document.createElement('div');
+    dot.className = 'stream-dot';
+    dot.style.background = colors[obsCount%colors.length];
+    dot.textContent = obsCount;
+    stream.appendChild(dot);
+    if(stream.children.length > 12) stream.removeChild(stream.firstChild);
+  }, 800);
+}
+function stopObs(){
+  if(obsInterval){ clearInterval(obsInterval); obsInterval=null; }
+  const status = document.getElementById('d-obs-status');
+  if(status) status.textContent = 'Status: Unsubscribed ■ — no more values';
+}
+
+function addIOStudent(){
+  const name = document.getElementById('d-io-name')?.value.trim() || 'Student';
+  const gpa  = parseFloat(document.getElementById('d-io-gpa')?.value) || 3.5;
+  const id   = Date.now();
+  ioStudents.push({ id, name, gpa });
+  if(document.getElementById('d-io-name'))  document.getElementById('d-io-name').value='';
+  if(document.getElementById('d-io-gpa'))   document.getElementById('d-io-gpa').value='';
+  renderIOCards();
+}
+function deleteIOStudent(id){
+  ioStudents = ioStudents.filter(s=>s.id!==id);
+  const log = document.getElementById('d-io-parent-log');
+  if(log) log.innerHTML = `<span style="color:var(--accent)">↑ @Output received: deleteRequested.emit(${id}) — Parent handled it!</span>`;
+  renderIOCards();
+}
+function renderIOCards(){
+  const el = document.getElementById('d-io-cards');
+  if(!el) return;
+  if(!ioStudents.length){ el.innerHTML='<div style="font-size:12px;color:var(--muted);text-align:center;padding:16px">لا يوجد students — ابعت @Input من الـ Parent</div>'; return; }
+  el.innerHTML = ioStudents.map(s=>`
+    <div style="background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:12px;display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-size:10px;color:var(--muted);font-family:var(--mono);margin-bottom:2px">CHILD — Student Card Component</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text)">@Input: ${s.name}</div>
+        <div style="font-size:11px;color:var(--muted2)">GPA: ${s.gpa.toFixed(2)}</div>
+      </div>
+      <button onclick="deleteIOStudent(${s.id})" class="demo-btn" style="background:rgba(225,52,42,0.15);color:var(--accent2);border:1px solid rgba(225,52,42,0.3)">
+        @Output emit() ↑
+      </button>
+    </div>`).join('');
+}
+
+// ── INIT ──
+show(0);
+</script>
+</body>
+</html>
